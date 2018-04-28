@@ -1,7 +1,6 @@
 # MySql数据库操作实例
 本项目是使用c3p0连接池的一个mysql实例
-
-![1](imgs/1.png)
+![数据库的ER图](imgs/数据库的ER图.png)
 ## 引入依赖
 ```xml
 <dependency>
@@ -24,9 +23,11 @@ mysql> source 指向项目下的create_database_table.sql的路径
 ## 插入数据
 ```bash
 mvn test -Dtest=MysqlHelperTest#saveTaskTest
+mvn test -Dtest=MysqlHelperTest#batchSaveTaskOBJTest
 ```
 
 ## 查询数据
 ```bash
 mvn test -Dtest=MysqlHelperTest#getTaskTest
+mvn test -Dtest=MysqlHelperTest#getTaskObjTest
 ```

@@ -6,11 +6,9 @@ package com.zhong;
  **/
 
 import java.io.UnsupportedEncodingException;
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
+import java.sql.*;
 import java.util.ArrayList;
+import java.util.Date;
 
 public class MysqlHelper {
     /**
@@ -77,6 +75,42 @@ public class MysqlHelper {
         return rs;
     }
 
+
+    /**
+     * 批处理，插入
+     *
+     * @param taskOBJS 要插入的类
+     *
+     */
+    public static void batchSaveTaskOBJ(ArrayList<TaskOBJ> taskOBJS) {
+        Connection conn = MysqlConnPool.getConnection();
+        PreparedStatement pres = null;
+        String sql1 = "insert into test_obj(id,obj,uploadtime) values(?,?,?)";
+
+        try {
+            //这里为了演示批量插入
+            pres = conn.prepareStatement(sql1);
+            for(TaskOBJ taskOBJ : taskOBJS){
+                pres.setString(1, taskOBJ.getId());
+                pres.setObject(2,MyUtils.msg2Byte(taskOBJ.getStudent()));
+                pres.setTimestamp(3,new Timestamp(taskOBJ.getUploadtime().getTime()));
+                pres.addBatch(); //实现批量插入
+            }
+            pres.executeBatch();//批量插入到数据库中
+
+            if (pres != null)
+                pres.close();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        } finally {
+            try {
+                conn.close();
+            } catch (SQLException e) {
+                System.out.println("关闭连接时候出错");
+            }
+        }
+    }
+
     /**
      * 向数据库中插入数据
      *
@@ -86,18 +120,10 @@ public class MysqlHelper {
     public static void saveTask(Task task) {
         Connection conn = MysqlConnPool.getConnection();
         PreparedStatement pres = null;
-        String sql1 = "insert into test_obj(obj) values(?)";
+
         String sql2 = "insert into test(str,i,obj) values(?,?,?)";
 
         try {
-            //这里为了演示批量插入
-            pres = conn.prepareStatement(sql1);
-            for (int i = 0; i < task.getObj().size(); i++) {
-                pres.setBytes(1, MyUtils.msg2Byte(task.getObj().get(i)));
-                pres.addBatch(); //实现批量插入
-            }
-            pres.executeBatch();//批量插入到数据库中
-
             pres = conn.prepareStatement(sql2);
             pres.setString(1, task.getStr());
             pres.setInt(2, task.getI());
@@ -140,6 +166,45 @@ public class MysqlHelper {
                 int i = res.getInt(3);
                 ArrayList<byte[]> obj = (ArrayList<byte[]>) MyUtils.byte2Msg(res.getBytes(4));
                 tSet = new Task(obj, str, i);
+            }
+            if (pres != null)
+                pres.close();
+            return tSet;
+        } catch (Exception e) {
+            e.printStackTrace();
+        }finally {
+            try {
+                conn.close();
+            } catch (SQLException e) {
+                System.out.println("关闭连接时候出错");
+            }
+        }
+        return null;
+    }
+
+    /**
+     * 从数据库表中查询数据
+     *
+     * @param id
+     *         要查询的id
+     *
+     * @return 查询出的结果
+     */
+    public static TaskOBJ getTaskObj(String id) {
+        String sql = "select * from " + "test_obj" + " where id=(?) limit 1";
+        Connection conn = MysqlConnPool.getConnection();
+        PreparedStatement pres = null;
+        TaskOBJ tSet = null;
+        try {
+            pres = conn.prepareStatement(sql);
+            pres.setString(1, id);
+            ResultSet res = pres.executeQuery();
+            while (res.next()) {
+                String idd = res.getString(1);
+                Student s = (Student) MyUtils.byte2Msg(res.getBytes(2));
+                Timestamp timestamp = res.getTimestamp(3);
+                Date date = new Date(timestamp.getTime());
+               tSet = new TaskOBJ(idd,s,date);
             }
             if (pres != null)
                 pres.close();

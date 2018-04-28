@@ -14,7 +14,6 @@ import java.sql.SQLException;
  * MySql连接池
  */
 public class MysqlConnPool {
-    //数据库vsse3是wang的方案
     //public static final String url = "jdbc:mysql://10.170.32.244:3306/QWSS";
     public static final String url = "jdbc:mysql://localhost:3306/QWSS?serverTimezone=UTC";
     public static final String username = "root";
@@ -54,11 +53,5 @@ public class MysqlConnPool {
         }
     }
 
-    private MysqlConnPool() {
-    }
-
-    public static MysqlConnPool getInstance() {
-        return instance;
-    }
 }
 
