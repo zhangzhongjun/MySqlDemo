@@ -1,4 +1,4 @@
-package com.zhong;
+package com.zhong.bean;
 
 
 import java.util.ArrayList;

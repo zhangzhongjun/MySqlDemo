@@ -1,4 +1,4 @@
-package com.zhong;
+package com.zhong.utils;
 
 /**
  * @author 张中俊

@@ -1,4 +1,4 @@
-package com.zhong;
+package com.zhong.utils;
 
 import javax.crypto.NoSuchPaddingException;
 import java.io.*;

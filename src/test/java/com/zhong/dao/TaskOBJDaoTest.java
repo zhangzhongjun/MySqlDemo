@@ -1,8 +1,10 @@
-package com.zhong;
+package com.zhong.dao;
 
+import com.zhong.bean.Student;
+import com.zhong.bean.TaskOBJ;
+import com.zhong.utils.MysqlHelper;
 import org.junit.Test;
 
-import java.io.UnsupportedEncodingException;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.UUID;
@@ -10,16 +12,7 @@ import java.util.UUID;
 /**
  * @author 张中俊
  **/
-public class MysqlHelperTest {
-    @Test
-    public void saveTaskTest() throws UnsupportedEncodingException {
-        ArrayList<byte[]> t = new ArrayList<>();
-        for(int i=0;i<100;i++){
-            t.add(("ind"+i).getBytes("utf-8"));
-        }
-        Task task = new Task(t,"hello world",12306);
-        MysqlHelper.saveTask(task);
-    }
+public class TaskOBJDaoTest {
 
     @Test
     public void batchSaveTaskOBJTest(){
@@ -31,18 +24,13 @@ public class MysqlHelperTest {
         taskOBJS.add(taskOBJ1);
         taskOBJS.add(taskOBJ2);
         taskOBJS.add(taskOBJ3);
-        MysqlHelper.batchSaveTaskOBJ(taskOBJS);
-    }
-
-    @Test
-    public void getTaskTest(){
-        Task task = MysqlHelper.getTask(1);
-        System.out.println(task);
+        TaskOBJDao.batchSaveTaskOBJ(taskOBJS);
     }
 
     @Test
     public void getTaskObjTest(){
-        TaskOBJ taskOBJ = MysqlHelper.getTaskObj("4b81751d-7aa5-41a2-a113-8426cfa68d0d");
+        TaskOBJ taskOBJ = TaskOBJDao.getTaskObj("aa1180ad-939b-41b9-8a82-3a6b45fa58a9");
         System.out.println(taskOBJ);
     }
+
 }

@@ -16,7 +16,13 @@
 ```
 
 ## 建库建表
-加入mysql命令行
+对应关系
+* id: 如果使用uuid作为id，数据库中使用 CHAR(36)，在sql 文件中使用函数uuid()获得一个随机的uuid
+* 时间戳：在sql文件中使用函数now()获得一个时间戳
+* 时间：数据库中使用timestamp，bean中使用java.utils.Date，dao中首先使用java.sql.Timestamp获得数据库中的数据，然后java.utils.Date date = new java.utils.Date(timestamp.getTime())获得java.utils.Date对象
+* 对象：数据库中使用blob，bean中是任意的Object，dao中使用MyUtils类中序列化和反序列化的方法
+
+进入mysql命令行
 ```bash
 mysql> source 指向项目下的create_database_table.sql的路径
 ```
