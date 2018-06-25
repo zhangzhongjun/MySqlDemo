@@ -21,7 +21,7 @@ CREATE TABLE test (
   PRIMARY KEY (id)
 )
   ENGINE = InnoDB
-  DEFAULT CHARSET = utf8;
+  DEFAULT CHARSET = utf8mb4;
 
 DROP TABLE IF EXISTS test_obj;
 
@@ -33,7 +33,7 @@ CREATE TABLE test_obj (
   uploadtime TIMESTAMP NOT NULL
 )
   ENGINE = InnoDB
-  DEFAULT CHARSET = utf8;
+  DEFAULT CHARSET = utf8mb4;
 
 -- insert into unit(id,unit_name) values(1,'西安电子科技大学');
 -- insert into unit(id,unit_name) values(2,'西北工业大学');

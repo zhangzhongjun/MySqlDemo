@@ -37,3 +37,18 @@ mvn test -Dtest=MysqlHelperTest#batchSaveTaskOBJTest
 mvn test -Dtest=MysqlHelperTest#getTaskTest
 mvn test -Dtest=MysqlHelperTest#getTaskObjTest
 ```
+
+# 编码问题
+
+MySQL的“utf8”实际上不是真正的UTF-8。“utf8”只支持每个字符最多三个字节，而真正的UTF-8是每个字符最多四个字节。
+
+MySQL一直没有修复这个bug，他们在2010年发布了一个叫作“utf8mb4”的字符集，绕过了这个问题。
+
+当然，他们并没有对新的字符集广而告之（可能是因为这个bug让他们觉得很尴尬），以致于现在网络上仍然在建议开发者使用“utf8”，但这些建议都是错误的。
+
+简单概括如下：
+* MySQL的 “utf8mb4” 是真正的“UTF-8”。
+* MySQL的 “utf8” 是一种 “专属的编码”，它能够编码的Unicode字符并不多。
+
+
+> 我要在这里澄清一下：所有在使用“utf8”的MySQL和MariaDB用户都应该改用“utf8mb4”，永远都不要再使用“utf8”。
